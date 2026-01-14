@@ -1,26 +1,20 @@
 import type { Metadata } from "next";
-import "@/styles/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import "@/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "CoinPay UI",
-  description: "Design system",
+  title: "Coinpay UI",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
