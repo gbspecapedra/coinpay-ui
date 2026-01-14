@@ -24,8 +24,8 @@ export type PageShellProps = {
 
 const sizeMap: Record<ShellSize, string> = {
   sm: "max-w-md",
-  md: "max-w-2xl",
-  lg: "max-w-4xl",
+  md: "max-w-4xl",
+  lg: "max-w-6xl",
   full: "max-w-none",
 };
 
@@ -37,15 +37,21 @@ export function PageShell({
   showThemeToggle = true,
   headerRight,
   headerLeft,
-  size = "sm",
-  variant = "card",
+  size = "md",
+  variant = "plain",
   className,
   contentClassName,
 }: PageShellProps) {
   return (
     <div className={cn("min-h-screen bg-background", className)}>
-      <div className={cn("mx-auto w-full px-4 py-6 sm:py-10", sizeMap[size])}>
-        <header className="mb-6 flex h-14 items-center justify-between gap-3">
+      {/* Top bar */}
+      <div className="sticky top-0 z-30 border-b bg-background/80 backdrop-blur">
+        <div
+          className={cn(
+            "mx-auto flex h-16 w-full items-center gap-3 px-4",
+            sizeMap[size]
+          )}
+        >
           <div className="flex items-center gap-3">
             {backHref ? (
               <Button variant="ghost" size="icon" asChild aria-label="Back">
@@ -54,6 +60,7 @@ export function PageShell({
                 </Link>
               </Button>
             ) : (
+              // control logo height from here
               <Logo className="h-6 sm:h-7" />
             )}
 
@@ -62,21 +69,26 @@ export function PageShell({
             ) : null}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="ml-auto flex items-center gap-2">
             {headerRight}
             {showThemeToggle ? <ThemeToggle /> : null}
           </div>
-        </header>
+        </div>
+      </div>
 
+      {/* Page content */}
+      <main className={cn("mx-auto w-full px-4 py-8", sizeMap[size])}>
         {(title || description) && (
           <div className="mb-6 space-y-2">
             {title ? (
-              <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                 {title}
               </h1>
             ) : null}
             {description ? (
-              <p className="text-sm text-muted-foreground">{description}</p>
+              <p className="text-sm text-muted-foreground sm:text-base">
+                {description}
+              </p>
             ) : null}
           </div>
         )}
@@ -93,7 +105,7 @@ export function PageShell({
         ) : (
           <div className={cn(contentClassName)}>{children}</div>
         )}
-      </div>
+      </main>
     </div>
   );
 }
