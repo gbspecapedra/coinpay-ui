@@ -1,42 +1,65 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { PageShell } from "@/components/layout/page-shell";
 import { TextField } from "@/components/ui/text-field";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Lock, Phone } from "lucide-react";
 import { CountryCodeSelect } from "@/components/country-code-select";
-import { COUNTRIES, CountryCode, DEFAULT_COUNTRY } from "@/lib/countries";
-import { getCountryFromLocale } from "@/lib/get-country-from-locale";
+import {
+  COUNTRIES,
+  type CountryCode,
+  DEFAULT_COUNTRY,
+  getCountryFromLocale,
+} from "@/lib/countries";
+import { formatPhoneAsYouType, isValidPhone, toE164 } from "@/lib/phone";
 
 export default function LoginPage() {
-  const [phone, setPhone] = useState("");
+  const [phone, setPhone] = useState(""); // formatted display value
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [country, setCountry] = useState<CountryCode>(DEFAULT_COUNTRY);
 
-  const canSubmit = phone.trim().length > 0 && password.trim().length > 0;
-
+  // Infer default country from user locale
   useEffect(() => {
     const localeCountry = getCountryFromLocale();
     if (!localeCountry) return;
 
     const match = COUNTRIES.find((c) => c.code === localeCountry);
-
-    if (match) {
-      setCountry(match);
-    }
+    if (match) setCountry(match);
   }, []);
+
+  // If user switches country after typing, reformat the same input under the new rules
+  useEffect(() => {
+    if (!phone) return;
+    setPhone(formatPhoneAsYouType(phone, country.code));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [country.code]);
+
+  const phoneValid = useMemo(() => {
+    if (!phone.trim()) return true; // don’t show error when empty
+    return isValidPhone(phone, country.code);
+  }, [phone, country.code]);
+
+  const canSubmit =
+    phone.trim().length > 0 &&
+    password.trim().length > 0 &&
+    phoneValid &&
+    !isSubmitting;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!canSubmit || isSubmitting) return;
+    if (!canSubmit) return;
+
+    const e164 = toE164(phone, country.code);
+    if (!e164) return;
 
     setIsSubmitting(true);
     try {
       // TODO: replace with real auth
+      // Send: { phone: e164, country: country.code, password }
       await new Promise((r) => setTimeout(r, 600));
       // push("/home") later
     } finally {
@@ -52,7 +75,7 @@ export default function LoginPage() {
       variant="card"
     >
       <form onSubmit={onSubmit} className="space-y-5">
-        {/* Phone row: country + phone input (mobile-first, matches the Figma layout) */}
+        {/* Phone row: country + phone input */}
         <div className="space-y-2">
           <label className="text-sm font-medium text-foreground">Phone</label>
 
@@ -67,10 +90,15 @@ export default function LoginPage() {
               label={undefined}
               placeholder="Mobile number"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => {
+                const next = formatPhoneAsYouType(e.target.value, country.code);
+                setPhone(next);
+              }}
               inputMode="tel"
+              autoComplete="tel"
               leftIcon={<Phone className="size-4" />}
               className="w-full"
+              error={!phoneValid ? "Enter a valid phone number." : undefined}
             />
           </div>
         </div>
@@ -82,6 +110,7 @@ export default function LoginPage() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           type={showPassword ? "text" : "password"}
+          autoComplete="current-password"
           leftIcon={<Lock className="size-4" />}
           rightIcon={
             <button

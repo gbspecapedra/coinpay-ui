@@ -72,7 +72,7 @@ export function CountryCodeSelect({
           <CommandInput placeholder="Search country…" />
           <CommandEmpty>No country found.</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className="max-h-[260px] overflow-y-auto">
             {countries.map((c) => {
               const selected = c.code === safeValue.code;
 
