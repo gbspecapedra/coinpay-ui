@@ -87,15 +87,21 @@ function Button({
       aria-busy={isLoading || undefined}
       {...props}
     >
-      {isLoading ? <Spinner /> : null}
-      <span
-        className={cn(
-          "inline-flex items-center gap-2",
-          isLoading ? "opacity-90" : undefined
-        )}
-      >
-        {children}
-      </span>
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {isLoading ? <Spinner /> : null}
+          <span
+            className={cn(
+              "inline-flex items-center gap-2",
+              isLoading ? "opacity-90" : undefined
+            )}
+          >
+            {children}
+          </span>
+        </>
+      )}
     </Comp>
   );
 }
