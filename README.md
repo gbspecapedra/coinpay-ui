@@ -56,7 +56,7 @@ A mobile-first fintech UI implemented as a responsive web application. Built to 
 
 ## ℹ️ How To Use
 
-To clone and run this application, you'll need [Git](https://git-scm.com), [NPM](https://www.npmjs.com/package/npm), [Node.js](https://nodejs.org/en/) >= 23.6.1 and an EasyPost API key (test key is sufficient). From your command line:
+To clone and run this application, you'll need [Git](https://git-scm.com), [NPM](https://www.npmjs.com/package/npm), [Node.js](https://nodejs.org/en/) >= 23.6.1. From your command line:
 
 ```bash
 # Clone the repository
