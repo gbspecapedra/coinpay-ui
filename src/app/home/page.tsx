@@ -11,10 +11,20 @@ import { QuickActions } from "./_components/quick-actions";
 import { Insights } from "./_components/insights";
 import { coerceMonth } from "@/lib/months";
 import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
+import { Suspense, useMemo } from "react";
 import { MonthSelect } from "@/components/month-select";
 
 export default function HomePage() {
+  return (
+    <Suspense
+      fallback={<div className="h-[60vh] rounded-2xl border bg-card" />}
+    >
+      <HomeInner />
+    </Suspense>
+  );
+}
+
+function HomeInner() {
   const searchParams = useSearchParams();
   const month = useMemo(() => {
     const raw = searchParams.get("month") ?? undefined;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { PageShell } from "@/components/layout/page-shell";
 import { Button } from "@/components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
@@ -18,6 +18,16 @@ import { useSearchParams } from "next/navigation";
 import { MonthSelect } from "@/components/month-select";
 
 export default function SpendingPage() {
+  return (
+    <Suspense
+      fallback={<div className="h-[60vh] rounded-2xl border bg-card" />}
+    >
+      <SpengingInner />
+    </Suspense>
+  );
+}
+
+function SpengingInner() {
   const searchParams = useSearchParams();
   const month = useMemo(() => {
     const raw = searchParams.get("month") ?? undefined;
