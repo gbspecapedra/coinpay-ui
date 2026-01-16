@@ -12,6 +12,7 @@ import { Insights } from "./_components/insights";
 import { coerceMonth } from "@/lib/months";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
+import { MonthSelect } from "@/components/month-select";
 
 export default function HomePage() {
   const searchParams = useSearchParams();
@@ -38,6 +39,16 @@ export default function HomePage() {
       }
       contentClassName="space-y-6"
     >
+      <div className="grid grid-cols-2 items-center">
+        <div className="text-sm font-medium text-muted-foreground">
+          Overview
+        </div>
+
+        <div className="flex justify-end">
+          <MonthSelect value={month} widthClassName="w-[150px]" />
+        </div>
+      </div>
+
       <SearchRow />
 
       <div className="grid gap-6 lg:grid-cols-12">

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { MONTHS, type MonthName } from "@/lib/months";
+import { coerceMonth, MONTHS, type MonthName } from "@/lib/months";
 
 export function MonthSelect({
   value,
@@ -23,8 +23,9 @@ export function MonthSelect({
   const searchParams = useSearchParams();
 
   function onChange(next: string) {
+    const coerced = coerceMonth(next);
     const params = new URLSearchParams(searchParams.toString());
-    params.set("month", next);
+    params.set("month", coerced);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
