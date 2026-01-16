@@ -76,6 +76,10 @@ function Button({
   const Comp = asChild ? Slot : "button";
   const isDisabled = disabled || isLoading;
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
     <Comp
       data-slot="button"
@@ -87,7 +91,6 @@ function Button({
       aria-busy={isLoading || undefined}
       {...props}
     >
-      {isLoading ? <Spinner /> : null}
       <span
         className={cn(
           "inline-flex items-center gap-2",
