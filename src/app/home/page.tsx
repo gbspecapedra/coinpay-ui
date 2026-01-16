@@ -1,6 +1,4 @@
 "use client";
-
-import { useMemo } from "react";
 import { PageShell } from "@/components/layout/page-shell";
 import { Button } from "@/components/ui/button";
 import { Bell, Trophy } from "lucide-react";
@@ -11,9 +9,18 @@ import { BalanceBanner } from "./_components/balance-banner";
 import { RecentActivity } from "./_components/recent-activity";
 import { QuickActions } from "./_components/quick-actions";
 import { Insights } from "./_components/insights";
+import { coerceMonth } from "@/lib/months";
+import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 
 export default function HomePage() {
-  const model = useMemo(() => buildHomeModel({ month: "January" }), []);
+  const searchParams = useSearchParams();
+  const month = useMemo(() => {
+    const raw = searchParams.get("month") ?? undefined;
+    return coerceMonth(raw);
+  }, [searchParams]);
+
+  const model = buildHomeModel({ month });
 
   return (
     <PageShell
@@ -44,7 +51,7 @@ export default function HomePage() {
             }}
           />
 
-          <RecentActivity rows={model.recent} />
+          <RecentActivity rows={model.recent} month={month} />
         </div>
 
         <aside className="space-y-6 lg:col-span-4">

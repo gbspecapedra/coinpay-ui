@@ -1,21 +1,6 @@
 import { CreditCard, Landmark, PiggyBank, Receipt } from "lucide-react";
 import type { CategoryDef } from "./types";
 
-export const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-] as const;
-
 export const CATEGORIES: CategoryDef[] = [
   {
     key: "spending",

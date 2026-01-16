@@ -80,6 +80,7 @@ function TxRow({
 
 export function RecentActivity({
   rows,
+  month,
 }: {
   rows: Array<{
     key: CategoryKey;
@@ -87,6 +88,7 @@ export function RecentActivity({
     subtitle: string;
     amount: number;
   }>;
+  month: string;
 }) {
   return (
     <SectionCard>
@@ -96,12 +98,12 @@ export function RecentActivity({
             Recent activity
           </h2>
           <p className="text-sm text-muted-foreground">
-            A quick view of what’s happening today.
+            A quick view of what&apos;s happening today.
           </p>
         </div>
 
         <Link
-          href="/spending"
+          href={`/spending?month=${encodeURIComponent(month)}`}
           className="text-sm font-medium text-primary hover:underline dark:text-[#A4ABFF]"
         >
           View all
