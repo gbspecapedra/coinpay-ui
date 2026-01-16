@@ -1,5 +1,4 @@
 <p align="center">Coinpay UI</p>
-<p align="center">Shipping Label Creator</p>
 
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/gbspecapedra/coinpay-ui">
@@ -15,7 +14,7 @@ A mobile-first fintech UI implemented as a responsive web application. Built to 
 
 ## 🚀 Live Demo
 
-[See live demo](https://.vercel.app/) - Deployed this project on [Vercel](https://vercel.com).
+[See live demo](https://coinpay-ui.vercel.app) - Deployed this project on [Vercel](https://vercel.com).
 
 ## 🧰 Tech Stack
 
