@@ -15,8 +15,10 @@ import {
 } from "@/lib/countries";
 import { formatPhoneAsYouType, isValidPhone, toE164 } from "@/lib/phone";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [phone, setPhone] = useState(""); // formatted display value
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +60,7 @@ export default function LoginPage() {
     setIsSubmitting(true);
     try {
       await new Promise((r) => setTimeout(r, 600));
-      // push("/home") later
+      router.push("/home");
     } finally {
       setIsSubmitting(false);
     }
@@ -252,7 +254,13 @@ export default function LoginPage() {
 
             {/* Small footer note */}
             <div className="mt-6 text-xs text-muted-foreground">
-              Tip: Use the theme toggle in the top-right to preview both themes.
+              Tip: Use the theme toggle in the top-right to preview both themes.{" "}
+              <Link
+                href="/design-system"
+                className="text-xs text-muted-foreground hover:text-foreground underline-offset-4 underline"
+              >
+                View design system
+              </Link>
             </div>
           </div>
         </aside>
